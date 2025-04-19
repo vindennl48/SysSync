@@ -1,13 +1,19 @@
-#!/bin/bash
+#!/bin/sh
 
-# SSH Install Script for Arch Linux
+homeDir="$HOME"
+dotfilesDir="${homeDir}/SysSync"
 
-echo "Installing SSH..."
-sudo pacman -Sy openssh
+source "$dotfilesDir/bin/lib"
+
+cprint -p "Installing OpenSSH for Arch!"
+
+sudo pacman -Syu --noconfirm openssh
 
 # comment out KbdInteractiveAuthentication in /etc/ssh/sshd_config
 read -p "--> Make sure to comment out KbdInteractiveAuthentication in /etc/ssh/sshd_config" ans
 sudo vim /etc/ssh/sshd_config
 
-echo "Enabling and starting SSH service..."
+cprint -p "Enabling and starting SSH service..."
 sudo systemctl enable sshd.service && sudo systemctl start sshd.service
+
+cprint -p "Install Complete!"

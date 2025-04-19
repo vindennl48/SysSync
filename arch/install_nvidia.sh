@@ -10,8 +10,6 @@ cprint -p "Installing NVIDIA drivers for Arch!"
 # Install NVIDIA packages
 sudo pacman -Syu --noconfirm linux-headers nvidia nvidia-dkms
 
-# need to do more testing here.. i think we need to do more with the nvidia-dkms setup..
-
 cprint ""
 cprint -p "Installation complete!"
 cprint "Please REBOOT your system and verify with:"
