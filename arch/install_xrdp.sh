@@ -7,7 +7,7 @@ source "$dotfilesDir/bin/lib"
 
 cprint -p "Installing Remote Desktop XRDP!"
 
-yay -S xorgxrdp pipewire-module-xrdp
+yay -S xrdp xorgxrdp pipewire-module-xrdp
 
 sudo systemctl enable xrdp.service
 sudo systemctl start xrdp.service
