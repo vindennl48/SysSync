@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Configuration
+CONFIG_FILE="${HOME}/.config/pacman/mypackages"
+TMP_DIR=$(mktemp -d)
+REAL_RUN=false
+
+# Cleanup temporary directory on exit
+cleanup() {
+    rm -rf "${TMP_DIR}"
+}
+trap cleanup EXIT
+
+# Parse command-line arguments
+while getopts ":r" opt; do
+    case $opt in
+        r) REAL_RUN=true ;;
+        *) echo "Usage: $0 [-r]" >&2; exit 1 ;;
+    esac
+done
+
+# update all of arch
+if $REAL_RUN; then
+    echo "First, lets update.."
+    echo ""
+    echo ""
+    sudo pacman -Syu
+    echo ""
+    echo ""
+fi
+
+# Config directory setup
+CONFIG_DIR=$(dirname "${CONFIG_FILE}")
+
+# Handle config file creation
+if $REAL_RUN; then
+    mkdir -p "${CONFIG_DIR}"
+    if [[ ! -f "${CONFIG_FILE}" ]]; then
+        echo "Initializing new config file at ${CONFIG_FILE}"
+        pacman -Qqe > "${CONFIG_FILE}"
+    fi
+else
+    if [[ ! -f "${CONFIG_FILE}" ]]; then
+        echo "Config file not found. Would create: ${CONFIG_FILE}"
+        echo "Would initialize with: pacman -Qqe"
+    fi
+fi
+
+# Generate package lists
+DESIRED_PKGS="${TMP_DIR}/desired_pkgs"
+INSTALLED_PKGS="${TMP_DIR}/installed_pkgs"
+
+if [[ -f "${CONFIG_FILE}" ]]; then
+    grep -vE '^#|^$' "${CONFIG_FILE}" | sort > "${DESIRED_PKGS}"
+else
+    pacman -Qqe | sort > "${DESIRED_PKGS}"
+fi
+
+pacman -Qqe | sort > "${INSTALLED_PKGS}"
+
+# Package installation
+if to_install=$(comm -23 "${DESIRED_PKGS}" "${INSTALLED_PKGS}"); then
+    if [[ -n "${to_install}" ]]; then
+        if $REAL_RUN; then
+            echo "Installing new packages:"
+            echo "${to_install}"
+            sudo pacman -S --needed --noconfirm $to_install
+        else
+            echo "Would install packages:"
+            echo "${to_install}"
+        fi
+    fi
+fi
+
+# Package removal
+if to_remove=$(comm -13 "${DESIRED_PKGS}" "${INSTALLED_PKGS}"); then
+    if [[ -n "${to_remove}" ]]; then
+        if $REAL_RUN; then
+            echo "Removing obsolete packages:"
+            echo "${to_remove}"
+            sudo pacman -R --nosave --noconfirm $to_remove
+        else
+            echo "Would remove packages:"
+            echo "${to_remove}"
+        fi
+    fi
+fi
+
+# Orphan cleanup
+if orphans=$(pacman -Qtdq); then
+    if [[ -n "${orphans}" ]]; then
+        if $REAL_RUN; then
+            echo "Removing orphans:"
+            echo "${orphans}"
+            sudo pacman -Rns --noconfirm $orphans
+        else
+            echo "Would remove orphans:"
+            echo "${orphans}"
+        fi
+    fi
+fi
+
+# System cleanup
+if $REAL_RUN; then
+    echo "Performing system cleanup:"
+    sudo pacman -Sc --noconfirm
+else
+    echo "Would clean package cache (pacman -Sc)"
+fi
+
+# Final dry-run reminder
+if ! $REAL_RUN; then
+    echo -e "\nDry run complete. No changes were made."
+    echo "Run with -r to execute these actions."
+fi
+

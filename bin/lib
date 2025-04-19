@@ -1,0 +1,105 @@
+#!/bin/bash
+
+cprint() {
+  local leader="     "
+
+  while test $# -gt 0; do
+    case "$1" in
+      -p)
+        leader="---->"
+        shift
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+
+  echo "$leader $*"  # Print the leader followed by the remaining arguments
+}
+
+# returns mac, arch, nix, unknown linux, unknown os
+# os=$(detect_os)
+# echo "System is: $os"
+# if [[ "$os" == "arch" ]]; then
+# elif [[ "$os" == "nix" ]]; then
+# elif [[ "$os" == "mac" ]]; then
+# else
+# fi
+detect_os() {
+  case "$(uname -s)" in
+    Darwin*) echo "mac" ;;
+    Linux*)
+      if [ -f /etc/os-release ]; then
+        source /etc/os-release
+        case "$ID" in
+          arch) echo "arch" ;;
+          nixos) echo "nix" ;;
+          *) echo "unknown linux" ;;
+        esac
+      else
+        echo "unknown linux"
+      fi
+      ;;
+    *) echo "unknown os" ;;
+  esac
+}
+
+copy_from_to() {
+  local source="$1"
+  local destination="$2"
+
+  if [ ! -e "$source" ]; then
+    cprint "File not found: $source"
+    return 1
+  fi
+
+  # check if the destination file exists
+  if [ -e "$destination" ]; then
+    # check if the destination file is a symlink
+    if [ -L "$destination" ]; then
+      cprint "Removing symlink: $destination"
+      rm "$destination"
+    else
+      # backup the destination file
+      backup "$destination"
+      # local backup_file="${destination}.bak"
+      # cprint "Renaming $destination to $backup_file"
+      # mv "$destination" "$backup_file"
+    fi
+  fi
+
+  # check if the source file is a folder
+  if [ -d "$source" ]; then
+    cp -r "$source" "$destination"
+  else
+    cp "$source" "$destination"
+  fi
+
+  cprint "Copied $source to $destination"
+  return 0
+}
+
+backup() {
+  # for all files listed as arguments
+  for file in "$@"; do
+    # rename the file with .bak
+    mv "$file" "${file}.bak"
+  done
+}
+
+backup_or_remove() {
+  local destination="$1"
+
+  if [ -e "$destination" ]; then
+    if [ -L "$destination" ]; then
+      cprint "Removing symlink: $destination"
+      rm "$destination"
+    else
+      backup "$destination"
+      # local backup_file="${destination}.bak"
+      # cprint "Renaming $destination to $backup_file"
+      # mv "$destination" "$backup_file"
+    fi
+  fi
+}

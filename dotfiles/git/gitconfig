@@ -1,0 +1,11 @@
+[color]
+  ui = true
+[alias]
+  fall = "!for remote in $(git remote); do echo "Fetching $remote"; git fetch "$remote"; done"
+[push]
+  default = upstream
+[fetch]
+  prune = true
+[user]
+  email = mitchellwoodbine@gmail.com
+  name = Mitchell Woodbine

@@ -1,0 +1,29 @@
+{
+  "languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+      "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        }
+      }
+    }
+  },
+  "inlayHint.enable": false,
+
+  "pyright.inlayHints.functionReturnTypes": false,
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.parameterTypes": false,
+
+  "Lua.hint.enable": false,
+  "Lua.misc.parameters": [
+    "--metapath",
+    "~/.cache/sumneko_lua/meta",
+    "--logpath",
+    "~/.cache/sumneko_lua/log"
+  ],
+  "sumneko-lua.enableNvimLuaDev": true,
+  "sumneko-lua.serverDir": "/run/current-system/sw/share/lua-language-server"
+}
