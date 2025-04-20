@@ -10,7 +10,7 @@ source "$dotfilesDir/bin/lib"
 cprint -p "Installing Dotfiles"
 
 os=$(detect_os)
-cprint "System is: $os"
+cprint "System is: \"$os\""
 
 cprint -p "Would you like to continue? [y/n]"
 read -r response
@@ -67,6 +67,7 @@ elif [[ "$os" == "nix" ]]; then
 
 else
   cprint "This system version is not supported.."
+  cprint "System is: \"$os\""
   exit 0
 fi
 ################################################################################
