@@ -42,9 +42,9 @@ elif [[ "$os" == "nix" ]]; then
     cprint -p "Installing NixHyper"
 
     # copy over config files
-    sudo backup_or_remove /etc/nixos/configuration.nix
-    sudo backup_or_remove /etc/nixos/flake.nix
-    sudo backup_or_remove /etc/nixos/flake.lock
+    backup_or_remove /etc/nixos/configuration.nix
+    backup_or_remove /etc/nixos/flake.nix
+    backup_or_remove /etc/nixos/flake.lock
     sudo ln -s ${dotfilesDir}/nix/nixhyper/configuration.nix /etc/nixos/configuration.nix
     sudo ln -s ${dotfilesDir}/nix/nixhyper/flake.nix /etc/nixos/flake.nix
     if [[ -f "${dotfilesDir}/nix/nixhyper/flake.lock" ]]; then
