@@ -42,19 +42,14 @@ elif [[ "$os" == "nix" ]]; then
     cprint -p "Installing NixHyper"
 
     # copy over config files
-    backup_or_remove /etc/nixos/configuration.nix
-    backup_or_remove /etc/nixos/flake.nix
-    backup_or_remove /etc/nixos/flake.lock
-    sudo ln -s ${dotfilesDir}/nix/nixhyper/configuration.nix /etc/nixos/configuration.nix
-    sudo ln -s ${dotfilesDir}/nix/nixhyper/flake.nix /etc/nixos/flake.nix
-    if [[ -f "${dotfilesDir}/nix/nixhyper/flake.lock" ]]; then
-      touch ${dotfilesDir}/nix/nixhyper/flake.lock
-      sudo ln -s ${dotfilesDir}/nix/nixhyper/flake.lock /etc/nixos/flake.lock
-    fi
+    sudo ln -s ${dotfilesDir}/nix/nixhyper /etc/nixos/SysSync
+    sudo chmod ${username}:users /etc/nixos/*
+    sudo cp /etc/nixos/hardware-configuration.nix ${dotfilesDir}/nix/nixhyper/.
 
     # build new config
     cprint -p "Rebuilding the system.."
-    sudo nixos-rebuild boot --flake
+    sudo nixos-rebuild boot --flake ${dotfilesDir}/nix/nixhyper/flake.nix#nixhyper
+    cprint "Rebuild Complete! (hopefully..)"
 
   # elif [ "$response" == "2" ]; then
 
