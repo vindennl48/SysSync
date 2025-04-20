@@ -18,7 +18,6 @@
   ## PACKAGES ##
   environment.systemPackages = with pkgs; [
     # system
-    # home-manager
     spice spice-gtk spice-protocol spice-vdagent
     virt-manager virt-viewer win-virtio win-spice pciutils virtiofsd
     looking-glass-client
@@ -29,16 +28,15 @@
     nh # helper for shortening nix commands
     nvd # helper for comparing nix versions and building new ones
     lua-language-server # since coc lua doesnt work right
+    fzf # make sure to put this in .zshrc: eval "$(fzf --zsh)"
 
     # audio
-    qjackctl # GUI for controlling jack connections
+    # qjackctl # GUI for controlling jack connections
   ];
 
   ## ADDITIONAL PACKAGES ##
   programs.zsh.enable = true;
   programs.firefox.enable = true;
-  programs.fzf.enable = true;
-  programs.fzf.enableZshIntegration = true;
 
   ## GUI ##
   services.xserver.enable = true;
