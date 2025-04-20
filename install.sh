@@ -18,6 +18,8 @@ if [ "$response" != "y" ]; then
   exit 0
 fi
 
+# PACKAGES / SYSTEM ############################################################
+################################################################################
 # installing required packages
 if [[ "$os" == "arch" ]]; then
   cprint -p "Install Required Packages"
@@ -28,52 +30,52 @@ if [[ "$os" == "arch" ]]; then
 
   cprint -p "Change shell to zsh"
   chsh -s $(which zsh)
-# elif [[ "$os" == "nix" ]]; then
+
+elif [[ "$os" == "nix" ]]; then
+  cprint -p "Select your desired host to install:"
+  cprint    "1. NixHyper"
+  cprint    "2. NixDarwin"
+  cprint    "0. Cancel"
+  read -r response
+
+  if [ "$response" == "1" ]; then
+    cprint -p "Installing NixHyper"
+
+    # copy over config files
+    sudo backup_or_remove /etc/nixos/configuration.nix
+    sudo backup_or_remove /etc/nixos/flake.nix
+    sudo backup_or_remove /etc/nixos/flake.lock
+    sudo ln -s ${dotfilesDir}/nix/nixhyper/configuration.nix /etc/nixos/configuration.nix
+    sudo ln -s ${dotfilesDir}/nix/nixhyper/flake.nix /etc/nixos/flake.nix
+    if [[ -f "${dotfilesDir}/nix/nixhyper/flake.lock" ]]; then
+      touch ${dotfilesDir}/nix/nixhyper/flake.lock
+      sudo ln -s ${dotfilesDir}/nix/nixhyper/flake.lock /etc/nixos/flake.lock
+    fi
+
+    # build new config
+    cprint -p "Rebuilding the system.."
+    sudo nixos-rebuild boot --flake
+
+  # elif [ "$response" == "2" ]; then
+
+  else
+    cprint -p "Install Canceled"
+    exit 0
+  fi
+
 # elif [[ "$os" == "mac" ]]; then
+
 else
   cprint "This system version is not supported.."
   exit 0
 fi
+################################################################################
+# PACKAGES / SYSTEM ############################################################
 
-link_dotfile() {
-  local repo_path="${dotfilesDir}/$1"
-  local home_path="${homeDir}/$2"
-  
-  # Skip if symlink is already correct
-  if [ -L "$home_path" ] && [ "$(readlink "$home_path")" = "$repo_path" ]; then
-    echo "✓ Symlink '$home_path' already correct"
-    return 0
-  fi
 
-  # Backup existing file/directory if not a symlink
-  if [ -e "$home_path" ] && [ ! -L "$home_path" ]; then
-    local backup_base="$home_path.bak"
-    local backup_path="$backup_base"
-    local timestamp=$(date +%Y%m%d%H%M%S)
-    
-    # Append timestamp if backup exists
-    [ -e "$backup_base" ] && backup_path="$backup_base.$timestamp"
-    
-    echo "⚠ Backing up '$home_path' to '$backup_path'"
-    mv -- "$home_path" "$backup_path"
-  fi
-
-  # Create parent directories if needed
-  mkdir -p "$(dirname "$home_path")"
-
-  # Create/update symlink
-  echo "➔ Creating symlink: '$home_path' → '$repo_path'"
-  ln -sfn "$repo_path" "$home_path"
-
-  # Set correct user permissions
-  echo "➔ Setting Permission: $(dirname "$home_path")"
-  sudo chown "${username}:users" "$(dirname "$home_path")"
-
-  echo "➔ Setting Permission: $home_path"
-  sudo chown -h "${username}:users" "$home_path"
-}
-
-# Dotfile mappings (repo_path:home_path)
+# DOTFILES #####################################################################
+################################################################################
+# mappings (repo_path:home_path)
 declare -A dotfiles=(
   ['dotfiles/zsh']='.config/zsh'
   ['dotfiles/nvim/nvim']='.config/nvim'
@@ -102,6 +104,7 @@ cprint -p "Install nvim plugins"
 mkdir -p ${homeDir}/.local/share/nvim/plugins
 git clone https://github.com/junegunn/vim-plug ${homeDir}/.local/share/nvim/plugins/vim-plug
 nvim --headless -c "PlugInstall" -c "TSUpdateSync" -c "qall"
+mkdir -p ${homeDir}/.config/coc/extensions/
 backup_or_remove ${homeDir}/.config/coc/extensions/package.json
 ln -s ${dotfilesDir}/dotfiles/nvim/nvim/coc-settings.json ${homeDir}/.config/coc/extensions/package.json
 
@@ -110,5 +113,8 @@ cprint -p "Install tmux plugins"
 mkdir -p ${homeDir}/.local/share/tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ${homeDir}/.local/share/tmux/plugins/tpm
 tmux new-session -d -s temp_session "tmux source-file ${homeDir}/.config/tmux/tmux.conf && ${homeDir}/.local/share/tmux/plugins/tpm/scripts/install_plugins.sh"
+################################################################################
+# DOTFILES #####################################################################
+
 
 cprint -p "Finished installing!"

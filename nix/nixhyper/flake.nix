@@ -10,7 +10,7 @@
   {
     nixosConfigurations."nixhyper" = nixpkgs.lib.nixosSystem {
       modules = [
-        ./configuration.nix
+        /etc/nixos/configuration.nix
       ];
     };
   };

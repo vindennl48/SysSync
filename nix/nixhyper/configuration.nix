@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ /etc/nixos/hardware-configuration.nix ];
 
   ## HOST NAME ##
   networking.hostName = "nixhyper"; # has to be included
