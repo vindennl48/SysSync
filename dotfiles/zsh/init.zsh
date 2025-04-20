@@ -7,6 +7,9 @@ if [ ! -e "/bin/bash" ]; then
   sudo ln -s "$(which bash)" "/bin/bash"
 fi
 
+# get username
+username="$(id -un)"
+
 ################################################################################
 # ENVIRONMENT
 ################################################################################
@@ -150,7 +153,7 @@ nix_clean() {
 }
 
 # Locations
-# alias lof='cd /Users/mitch/Documents/Code/Python/LOFUpload; python3 main.py'
+# alias lof='cd /Users/${username}/Documents/Code/Python/LOFUpload; python3 main.py'
 # alias ga='cd ~/Documents/code/Teensy/MightyLooper' # most used shortcut
 # alias gc='cd ~/Documents/code/'
 alias go='cd'
@@ -165,10 +168,10 @@ alias addGithubKey='mkdir -p ~/.ssh; cp /mnt/intstorage/github/id_ed25519 ~/.ssh
 # argument password
 # example: mount_intstorage <password>
 mount_intstorage() {
-  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=mitch,password=$1 //192.168.1.5/sambashare /mnt/intstorage
+  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=${username},password=$1 //192.168.1.5/sambashare /mnt/intstorage
 }
 mount_extstorage() {
-  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=mitch,password=$1 //192.168.1.3/sambashare /mnt/extstorage
+  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=${username},password=$1 //192.168.1.3/sambashare /mnt/extstorage
 }
 alias mount_intstorage_windows='sudo mkdir -p /mnt/intstorage; sudo mount -t drvfs "\\192.168.1.5\sambashare" /mnt/intstorage'
 alias mount_extstorage_windows='sudo mkdir -p /mnt/extstorage; sudo mount -t drvfs "\\192.168.1.3\sambashare" /mnt/extstorage'
@@ -215,8 +218,8 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 # }
 # # alias cwdd="p ~/bin/dotfiles/python/CWD.py"
 # 
-# #used with mitch.py
-# alias mitch="p ~/bin/dotfiles/python/mitch.py"
+# #used with ${username}.py
+# alias ${username}="p ~/bin/dotfiles/python/${username}.py"
 # #used with lof.py
 # alias lof="p ~/bin/dotfiles/python/lof.py"
 

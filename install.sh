@@ -41,6 +41,9 @@ elif [[ "$os" == "nix" ]]; then
   if [ "$response" == "1" ]; then
     cprint -p "Installing NixHyper"
 
+    # rename .git since nixos doesnt deal well with repos
+    sudo mv ${dotfilesDir}/.git ${dotfilesDir}/.git.bak
+
     # copy over config files
     sudo ln -s ${dotfilesDir}/nix/nixhyper /etc/nixos/SysSync
     sudo chmod ${username}:users /etc/nixos/*
@@ -49,7 +52,10 @@ elif [[ "$os" == "nix" ]]; then
     # build new config
     cprint -p "Rebuilding the system.."
     sudo nixos-rebuild boot --flake ${dotfilesDir}/nix/nixhyper/flake.nix#nixhyper
-    cprint "Rebuild Complete! (hopefully..)"
+    cprint -p "Rebuild Complete! (hopefully..)"
+
+    # rename .git back to normal
+    sudo mv ${dotfilesDir}/.git.bak ${dotfilesDir}/.git
 
   # elif [ "$response" == "2" ]; then
 
