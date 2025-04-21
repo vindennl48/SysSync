@@ -130,6 +130,7 @@ alias youtube='yt-dlp -x --audio-format wav' # last arg is link
 alias youtubeList='yt-dlp -x --audio-format wav -a' # last arg is file of links
 
 # Nix Specific
+alias gui="startplasma-wayland" # to start GUI from terminal
 alias nix_boot='nh os boot ~/MyNix/flake.nix'
 # alias nix_switch='nh os switch ~/MyNix/flake.nix'
 alias nix_home='home-manager switch --flake ~/.config/home-manager'
