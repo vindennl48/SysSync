@@ -1,3 +1,5 @@
+source "$HOME/SysSync/bin/lib"
+
 ################################################################################
 # PRE CHECK
 ################################################################################
@@ -7,9 +9,8 @@ if [ ! -e "/bin/bash" ]; then
   sudo ln -s "$(which bash)" "/bin/bash"
 fi
 
-# get username
 username="$(id -un)"
-
+os=$(detect_os)
 ################################################################################
 # ENVIRONMENT
 ################################################################################
@@ -37,10 +38,12 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/key-bindings.zsh"
   source "$(fzf-share)/completion.zsh"
 fi
+if [[ "$os" == "nix" ]]; then
+  eval "$(fzf --zsh)"
+fi
 
 ## HISTORY ##
-if [[ "$(sysctl -n machdep.cpu.brand_string 2>/dev/null)" == *"Apple"* ]]; then
-  ## FOR MAC ##
+if [[ "$os" == "mac" ]]; then
   bindkey "^[[A" history-search-backward
   bindkey "^[[B" history-search-forward
 else
@@ -138,7 +141,7 @@ alias nix_edit_os='cd ~/MyNix; vim'
 alias nix_edit_home='cd ~/.config/home-manager; vim'
 
 nix_switch() {
-  if [[ "$(sysctl -n machdep.cpu.brand_string 2>/dev/null)" == *"Apple"* ]]; then
+  if [[ "$os" == "mac" ]]; then
     darwin-rebuild switch --flake ~/MyNix
   else
     nh os switch ~/MyNix
@@ -146,7 +149,7 @@ nix_switch() {
 }
 
 nix_clean() {
-  if [[ "$(sysctl -n machdep.cpu.brand_string 2>/dev/null)" == *"Apple"* ]]; then
+  if [[ "$os" == "mac" ]]; then
     sudo nix-collect-garbage --delete-old; sudo nix-collect-garbage -d; nix-collect-garbage --delete-old; nix-collect-garbage -d; brew cleanup -s
   else
     nix-collect-garbage --delete-old; sudo nix-collect-garbage -d; sudo /run/current-system/bin/switch-to-configuration boot
