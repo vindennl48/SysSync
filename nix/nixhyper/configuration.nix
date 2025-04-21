@@ -5,6 +5,7 @@
 
   ## HOST NAME ##
   networking.hostName = "nixhyper"; # has to be included
+  hardware.cpu.intel.updateMicrocode = true;
 
   ## USERS ##
   # Define a user account. Don't forget to set a password with ‘passwd’.

@@ -51,7 +51,7 @@ elif [[ "$os" == "nix" ]]; then
 
     # build new config
     cprint -p "Rebuilding the system.."
-    sudo nixos-rebuild boot --flake ${dotfilesDir}/nix/nixhyper/flake.nix#nixhyper
+    sudo nixos-rebuild boot --flake ${dotfilesDir}/nix/nixhyper#nixhyper
     cprint -p "Rebuild Complete! (hopefully..)"
 
     # rename .git back to normal
