@@ -90,8 +90,7 @@ if [ "$response" == "y" ]; then
 # mappings (repo_path:home_path)
 declare -A dotfiles=(
   ['dotfiles/zsh']='.config/zsh'
-  ['dotfiles/nvim/nvim']='.config/nvim'
-  ['dotfiles/nvim/coc']='.config/coc'
+  ['dotfiles/nvim']='.config/nvim'
   ['dotfiles/tmux']='.config/tmux'
   ['dotfiles/git/gitconfig']='.gitconfig'
   ['dotfiles/alacritty']='.config/alacritty'
@@ -118,7 +117,7 @@ git clone https://github.com/junegunn/vim-plug ${homeDir}/.local/share/nvim/plug
 nvim --headless -c "PlugInstall" -c "TSUpdateSync" -c "qall"
 mkdir -p ${homeDir}/.config/coc/extensions/
 backup_or_remove ${homeDir}/.config/coc/extensions/package.json
-ln -s ${dotfilesDir}/dotfiles/nvim/nvim/coc-settings.json ${homeDir}/.config/coc/extensions/package.json
+ln -s ${dotfilesDir}/dotfiles/nvim/coc-settings.json ${homeDir}/.config/coc/package.json
 
 # install tmux plugins
 cprint -p "Install tmux plugins"
