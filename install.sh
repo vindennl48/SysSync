@@ -12,14 +12,13 @@ cprint -p "Installing Dotfiles"
 os=$(detect_os)
 cprint "System is: \"$os\""
 
-cprint -p "Would you like to continue? [y/n]"
-read -r response
-if [ "$response" != "y" ]; then
-  exit 0
-fi
 
 # PACKAGES / SYSTEM ############################################################
 ################################################################################
+cprint -p "Would you like to install the system? [y/n]"
+read -r response
+if [ "$response" == "y" ]; then
+
 # installing required packages
 if [[ "$os" == "arch" ]]; then
   cprint -p "Install Required Packages"
@@ -45,14 +44,19 @@ elif [[ "$os" == "nix" ]]; then
     sudo mv ${dotfilesDir}/.git ${dotfilesDir}/.git.bak
 
     # copy over config files
+    backup_or_remove /etc/nixos/SysSync
     sudo ln -s ${dotfilesDir}/nix/nixhyper /etc/nixos/SysSync
-    sudo chmod ${username}:users /etc/nixos/*
+    sudo chown ${username}:users /etc/nixos/*
     sudo cp /etc/nixos/hardware-configuration.nix ${dotfilesDir}/nix/nixhyper/.
 
     # build new config
-    cprint -p "Rebuilding the system.."
-    sudo nixos-rebuild boot --flake ${dotfilesDir}/nix/nixhyper#nixhyper
-    cprint -p "Rebuild Complete! (hopefully..)"
+    cprint -p "Would you like to rebuild nixos? [y/n]"
+    read -r response
+    if [ "$response" == "y" ]; then
+      cprint -p "Rebuilding the system.."
+      sudo nixos-rebuild boot --flake ${dotfilesDir}/nix/nixhyper#nixhyper
+      cprint -p "Rebuild Complete! (hopefully..)"
+    fi
 
     # rename .git back to normal
     sudo mv ${dotfilesDir}/.git.bak ${dotfilesDir}/.git
@@ -71,12 +75,18 @@ else
   cprint "System is: \"$os\""
   exit 0
 fi
+
+fi
 ################################################################################
 # PACKAGES / SYSTEM ############################################################
 
 
 # DOTFILES #####################################################################
 ################################################################################
+cprint -p "Would you like to install dotfiles? [y/n]"
+read -r response
+if [ "$response" == "y" ]; then
+
 # mappings (repo_path:home_path)
 declare -A dotfiles=(
   ['dotfiles/zsh']='.config/zsh'
@@ -115,6 +125,8 @@ cprint -p "Install tmux plugins"
 mkdir -p ${homeDir}/.local/share/tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ${homeDir}/.local/share/tmux/plugins/tpm
 tmux new-session -d -s temp_session "tmux source-file ${homeDir}/.config/tmux/tmux.conf && ${homeDir}/.local/share/tmux/plugins/tpm/scripts/install_plugins.sh"
+
+fi
 ################################################################################
 # DOTFILES #####################################################################
 
