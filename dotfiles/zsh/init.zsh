@@ -38,8 +38,13 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/key-bindings.zsh"
   source "$(fzf-share)/completion.zsh"
 fi
-if [[ "$os" == "nix" ]]; then
+if [[ "$os" == "nix" || "$os" == "mac" ]]; then
   eval "$(fzf --zsh)"
+fi
+
+## HOMEBREW ##
+if [[ "$os" == "mac" ]]; then
+  eval $(/opt/homebrew/bin/brew shellenv)
 fi
 
 ## HISTORY ##
@@ -112,8 +117,8 @@ alias c='clear; clear'
 alias clear='clear; clear'
 alias t='tree'
 alias make_runnable='chmod a+x'
-alias l='ls -noGp'
-alias lsh='ls -noGpa'
+alias l='ls -noGplh'
+alias lsh='ls -noGplha'
 alias q1='exit'
 alias p='python3'
 alias unlock='sudo xattr -r -d com.apple.quarantine' # Used for unlocking downloaded files from apple's quarantine process
@@ -157,9 +162,10 @@ nix_clean() {
 }
 
 # Locations
-# alias lof='cd /Users/${username}/Documents/Code/Python/LOFUpload; python3 main.py'
-# alias ga='cd ~/Documents/code/Teensy/MightyLooper' # most used shortcut
-# alias gc='cd ~/Documents/code/'
+if [[ "$os" == "mac" ]]; then
+  alias ga='cd ~/Documents/code/Teensy/MightyLooper' # most used shortcut
+  alias gc='cd ~/Documents/code/'
+fi
 alias go='cd'
 
 ## Mount Stuff
@@ -172,10 +178,10 @@ alias addGithubKey='mkdir -p ~/.ssh; cp /mnt/intstorage/github/id_ed25519 ~/.ssh
 # argument password
 # example: mount_intstorage <password>
 mount_intstorage() {
-  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=${username},password=$1 //192.168.1.5/sambashare /mnt/intstorage
+  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=mitch,password=$1 //192.168.1.5/sambashare /mnt/intstorage
 }
 mount_extstorage() {
-  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=${username},password=$1 //192.168.1.3/sambashare /mnt/extstorage
+  sudo mount --mkdir -t cifs -o uid=1000,gid=1000,username=mitch,password=$1 //192.168.1.3/sambashare /mnt/extstorage
 }
 alias mount_intstorage_windows='sudo mkdir -p /mnt/intstorage; sudo mount -t drvfs "\\192.168.1.5\sambashare" /mnt/intstorage'
 alias mount_extstorage_windows='sudo mkdir -p /mnt/extstorage; sudo mount -t drvfs "\\192.168.1.3\sambashare" /mnt/extstorage'
@@ -191,8 +197,8 @@ alias ss='source ~/.zshrc'
 
 # Edits
 # alias ee='vim $DOTFILES_PATH/UserNotes.md'
-alias ea='vim $DOTFILES_PATH/dotfiles/zsh/config/zsh'
-alias es='vim $DOTFILES_PATH/dotfiles/nvim/config/nvim'
+alias ea='vim $DOTFILES_PATH/dotfiles/zsh'
+alias es='vim $DOTFILES_PATH/dotfiles/nvim/nvim'
 
 # TMUX
 alias ta='tmux attach -t'
@@ -215,17 +221,19 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 # # Custom Python CLI tools
 # #########################
 # #used with CWD.py to set and change working directories
-# cwd() {
-#   # ans=$(p ~/bin/dotfiles/python/CWD.py $@)
-#   # eval "$ans"
-#   eval $(p ~/bin/dotfiles/python/CWD.py $@)
-# }
+cwd() {
+  # ans=$(p ~/bin/dotfiles/python/CWD.py $@)
+  # eval "$ans"
+  eval $(p ~/bin/dotfiles/python/CWD.py $@)
+}
 # # alias cwdd="p ~/bin/dotfiles/python/CWD.py"
-# 
-# #used with ${username}.py
-# alias ${username}="p ~/bin/dotfiles/python/${username}.py"
-# #used with lof.py
-# alias lof="p ~/bin/dotfiles/python/lof.py"
+
+if [[ "$os" == "mac" ]]; then
+  #used with mitch.py
+  alias mitch="p ~/bin/dotfiles/python/mitch.py"
+  #used with lof.py
+  alias lof="p ~/bin/dotfiles/python/lof.py"
+fi
 
 # Custom Functions
 ##################

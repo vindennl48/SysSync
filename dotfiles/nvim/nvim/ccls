@@ -1,0 +1,5 @@
+clang++
+%h %cpp -std=c++17
+-I/Users/mitch/JUCE/modules/juce_audio_processors/format_types/VST3_SDK
+-I/Users/mitch/JUCE/modules
+-IJuceLibraryCode

@@ -35,7 +35,7 @@ Plug 'jakemason/ouroboros' -- switch between h and c/cpp file pairs
 Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate', ['commit'] = '707e352df6d737e545e1a7204f7395ba82e6d2d3' }) -- so plugins can understand code context
 Plug 'echasnovski/mini.nvim' -- a plugin manager, see settings file
 Plug('lukas-reineke/indent-blankline.nvim', { ['commit'] = '9637670896b68805430e2f72cf5d16be5b97a22a' }) -- colorful indents
--- Plug('neoclide/coc.nvim', { ['branch'] = 'release' }) -- code completion
+Plug('neoclide/coc.nvim', { ['branch'] = 'release' }) -- code completion
 Plug 'stevearc/oil.nvim' -- file explorer
 -- Plug 'Exafunction/codeium.vim' -- AI autocomplete
 
@@ -111,22 +111,22 @@ map("n", "<C-j>", ":wincmd j<cr>", { noremap = false, silent = true, desc = "mov
 map("n", "<C-h>", ":wincmd h<cr>", { noremap = false, silent = true, desc = "move to left split" })
 map("n", "<C-l>", ":wincmd l<cr>", { noremap = false, silent = true, desc = "move to right split" })
 
--- -- Custom CWD python app
--- map(
---   "n",
---   "<leader>cwd",
---   function()
---     -- print(vim.fn.expand("%:p:h"))
---     local directory = vim.fn.expand("%:p:h")
---     os.execute("python3 /Users/mitch/bin/dotfiles/python/CWD.py -a " .. directory)
---     print("CWD> Current Working Directory Saved!")
---   end,
---   {
---     noremap = false,
---     silent  = true,
---     desc    = "Adds the current directory to CWD"
---   }
--- )
+-- Custom CWD python app
+map(
+  "n",
+  "<leader>cwd",
+  function()
+    -- print(vim.fn.expand("%:p:h"))
+    local directory = vim.fn.expand("%:p:h")
+    os.execute("python3 $HOME/bin/CWD.py -a " .. directory)
+    print("CWD> Current Working Directory Saved!")
+  end,
+  {
+    noremap = false,
+    silent  = true,
+    desc    = "Adds the current directory to CWD"
+  }
+)
 
 -- map(
 --   "i",
@@ -191,12 +191,12 @@ set.shiftwidth = 2
 set.expandtab = true
 set.smartindent = true -- autoindenting
 
--- Word Wrap Settings
-set.wrap = false -- wordwrap
-set.textwidth = 80
-set.wrapmargin = 0
-vim.o.formatoptions = vim.o.formatoptions .. 't'
-set.linebreak = true -- (optional - breaks by word rather than character)
+-- -- Word Wrap Settings
+-- set.wrap = false -- wordwrap
+-- set.textwidth = 80
+-- set.wrapmargin = 0
+-- vim.o.formatoptions = vim.o.formatoptions .. 't'
+-- set.linebreak = true -- (optional - breaks by word rather than character)
 
 -- stop backups, can have some issues
 set.swapfile = false
