@@ -198,7 +198,7 @@ alias ss='source ~/.zshrc'
 # Edits
 # alias ee='vim $DOTFILES_PATH/UserNotes.md'
 alias ea='vim $DOTFILES_PATH/dotfiles/zsh'
-alias es='vim $DOTFILES_PATH/dotfiles/nvim/nvim'
+alias es='vim $DOTFILES_PATH/dotfiles/nvim'
 
 # TMUX
 alias ta='tmux attach -t'
