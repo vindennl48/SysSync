@@ -15,6 +15,11 @@ local Plug = vim.fn['plug#']
 -- Assign Mapleader
 g.mapleader = '-' -- Make sure this is first!
 
+-- install coc extensions in config folder
+vim.cmd [[
+  let $COC_DATA_HOME = expand("$HOME/.config/coc")
+]]
+
 -- PLUGINS ---------------------------------------------------------------------
 --------------------------------------------------------------------------------
 cmd('source $HOME/.local/share/nvim/plugins/vim-plug/plug.vim')
