@@ -25,7 +25,7 @@ if [[ "$os" == "arch" ]]; then
   sudo pacman -Syu neovim gcc make nodejs yarn xclip tmux zsh
 
   cprint -p "Installing pyenv"
-  bash <(curl -fsSL https://pyenv.run)
+  curl -fsSL https://pyenv.run | bash -i
 
   cprint -p "Change shell to zsh"
   chsh -s $(which zsh)
