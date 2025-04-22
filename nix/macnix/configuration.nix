@@ -88,13 +88,13 @@
       # Changing Window Focus
       # ALT is actually option key
       
-      # cmd - 0 : open -a iterm
       cmd - 0 : open -a alacritty
+
       # cmd - 1 is set up thru macos keyboard shortcuts to desktop
-      cmd - 4 : open -a Safari
-      # cmd - 3 : open -a notes
-      # shift + cmd - 0 : open -na iterm
-      
+
+      # cmd - 4 : open -a Safari
+      cmd - 4 -> : open -a Safari
+
       # disable cmd-h to hide things
       # cmd - h : skhd -k ""
     '';
