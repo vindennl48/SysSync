@@ -110,7 +110,8 @@ cprint -p "Install nvim plugins"
 if [[ ! -d ${homeDir}/.local/share/nvim/plugins/vim-plug ]]; then
   mkdir -p ${homeDir}/.local/share/nvim/plugins
   git clone https://github.com/junegunn/vim-plug ${homeDir}/.local/share/nvim/plugins/vim-plug
-  nvim --headless -c "PlugInstall" -c "TSUpdateSync" -c "qall"
+  nvim --headless -c "PlugInstall" -c "qall"
+  nvim --headless -c "TSUpdateSync" -c "qall"
 fi
 mkdir -p ${homeDir}/.config/coc/
 backup_or_remove ${homeDir}/.config/coc/package.json
