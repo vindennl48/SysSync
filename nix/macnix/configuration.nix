@@ -30,7 +30,7 @@
     # home-manager # use SysSync dotfiles instead
     vim
     neovim gcc nodejs yarn xclip
-    # fzf # trying the programs.fzf version first..
+    fzf
     tmux
     git
     appcleaner
@@ -119,11 +119,6 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-  };
-  # might need to remove..
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
   };
 
   # Set Git commit hash for darwin-version.
