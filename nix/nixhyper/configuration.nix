@@ -21,7 +21,7 @@
     # system
     spice spice-gtk spice-protocol spice-vdagent
     virt-manager virt-viewer win-virtio win-spice pciutils virtiofsd
-    looking-glass-client
+    looking-glass-client # version B7-rc1
 
     # general
     vim neovim htop wget git less tree
@@ -36,7 +36,13 @@
   ];
 
   ## ADDITIONAL PACKAGES ##
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+  };
+
   programs.firefox.enable = true;
 
   ## CODEIUM (needed to get codeium.vim to work) ##
