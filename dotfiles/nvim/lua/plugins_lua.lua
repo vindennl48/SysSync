@@ -160,11 +160,11 @@ require("oil").setup({
   use_default_keymaps = false,
 })
 
--- -- Codeium
--- g.codeium_disable_bindings = 1
--- map('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
--- map('i', '<C-]>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
--- map('i', '<C-[>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
--- map('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+-- Codeium
+g.codeium_disable_bindings = 1
+map('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+map('i', '<C-]>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+map('i', '<C-[>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+map('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
 --------------------------------------------------------------------------------
 -- END PLUGIN SETTINGS ---------------------------------------------------------
