@@ -29,8 +29,6 @@ os=$(detect_os)
 ################################################################################
 # ENVIRONMENT
 ################################################################################
-## export ZDOTDIR="$HOME/.config/zsh" # move dotfiles to .config
-# export ZSH_HOME_PATH="$HOME/.config/zsh"
 export VISUAL="nvim" # default visual 
 export EDITOR="$VISUAL" # default editor
 
