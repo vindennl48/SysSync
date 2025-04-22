@@ -46,7 +46,11 @@ elif [[ "$os" == "nix" ]]; then
     # copy over config files
     backup_or_remove /etc/nixos/SysSync
     sudo ln -s ${dotfilesDir}/nix/nixhyper /etc/nixos/SysSync
-    sudo chown ${username}:users /etc/nixos/*
+    if [[ "$os" == "mac" ]]; then
+      sudo chown ${username}:staff /etc/nixos/*
+    else
+      sudo chown ${username}:users /etc/nixos/*
+    fi
     sudo cp /etc/nixos/hardware-configuration.nix ${dotfilesDir}/nix/nixhyper/.
 
     # build new config
