@@ -22,7 +22,7 @@ if [ "$response" == "y" ]; then
 # installing required packages
 if [[ "$os" == "arch" ]]; then
   cprint -p "Install Required Packages"
-  sudo pacman -Syu neovim gcc make nodejs yarn xclip tmux zsh tree
+  sudo pacman -Syu neovim gcc make nodejs npm yarn xclip tmux zsh tree
 
   cprint -p "Installing pyenv"
   curl -fsSL https://pyenv.run | bash -i
