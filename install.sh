@@ -112,18 +112,22 @@ cprint -p "Zsh plugins are installed on first zsh launch"
 
 # install nvim plugins
 cprint -p "Install nvim plugins"
-mkdir -p ${homeDir}/.local/share/nvim/plugins
-git clone https://github.com/junegunn/vim-plug ${homeDir}/.local/share/nvim/plugins/vim-plug
-nvim --headless -c "PlugInstall" -c "TSUpdateSync" -c "qall"
-mkdir -p ${homeDir}/.config/coc/extensions/
-backup_or_remove ${homeDir}/.config/coc/extensions/package.json
+if [[ ! -d ${homeDir}/.local/share/nvim/plugins/vim-plug ]]; then
+  mkdir -p ${homeDir}/.local/share/nvim/plugins
+  git clone https://github.com/junegunn/vim-plug ${homeDir}/.local/share/nvim/plugins/vim-plug
+  nvim --headless -c "PlugInstall" -c "TSUpdateSync" -c "qall"
+fi
+mkdir -p ${homeDir}/.config/coc/
+backup_or_remove ${homeDir}/.config/coc/package.json
 ln -s ${dotfilesDir}/dotfiles/nvim/coc-settings.json ${homeDir}/.config/coc/package.json
 
 # install tmux plugins
 cprint -p "Install tmux plugins"
-mkdir -p ${homeDir}/.local/share/tmux/plugins
-git clone https://github.com/tmux-plugins/tpm ${homeDir}/.local/share/tmux/plugins/tpm
-tmux new-session -d -s temp_session "tmux source-file ${homeDir}/.config/tmux/tmux.conf && ${homeDir}/.local/share/tmux/plugins/tpm/scripts/install_plugins.sh"
+if [[ ! -d ${homeDir}/.local/share/tmux/plugins/tpm ]]; then
+  mkdir -p ${homeDir}/.local/share/tmux/plugins
+  git clone https://github.com/tmux-plugins/tpm ${homeDir}/.local/share/tmux/plugins/tpm
+  tmux new-session -d -s temp_session "tmux source-file ${homeDir}/.config/tmux/tmux.conf && ${homeDir}/.local/share/tmux/plugins/tpm/scripts/install_plugins.sh"
+fi
 
 fi
 ################################################################################
