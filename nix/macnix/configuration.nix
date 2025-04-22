@@ -31,6 +31,8 @@
     vim
     neovim gcc nodejs yarn xclip
     fzf
+    zsh-autosuggestions
+    zsh-syntax-highlighting
     tmux
     git
     appcleaner
@@ -114,11 +116,25 @@
   nix.settings.experimental-features = "nix-command flakes";
 
   # Enable alternative shell support in nix-darwin.
+  # programs.zsh = {
+  #   enable = true;
+  #   enableCompletion = true;
+  #   autosuggestion.enable = true;
+  #   syntaxHighlighting.enable = true;
+  # };
+
   programs.zsh = {
     enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+    enableCompletion = true;  # ✅ Built-in option in Nix Darwin
+
+    # Manually source autosuggestions and syntax highlighting
+    interactiveShellInit = ''
+      # Enable autosuggestions
+      source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+      # Enable syntax highlighting
+      source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    '';
   };
 
   # Set Git commit hash for darwin-version.
