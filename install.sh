@@ -87,21 +87,12 @@ cprint -p "Would you like to install dotfiles? [y/n]"
 read -r response
 if [ "$response" == "y" ]; then
 
-# mappings (repo_path:home_path)
-declare -A dotfiles=(
-  ['dotfiles/zsh']='.config/zsh'
-  ['dotfiles/nvim']='.config/nvim'
-  ['dotfiles/tmux']='.config/tmux'
-  ['dotfiles/git/gitconfig']='.gitconfig'
-  ['dotfiles/alacritty']='.config/alacritty'
-  ['bin']='bin'
-  # Add more mappings here
-)
-
-# Process all dotfiles
-for repo_path in "${!dotfiles[@]}"; do
-  link_dotfile "$repo_path" "${dotfiles[$repo_path]}"
-done
+link_dotfile 'dotfiles/zsh' '.config/zsh'
+link_dotfile 'dotfiles/nvim' '.config/nvim'
+link_dotfile 'dotfiles/tmux' '.config/tmux'
+link_dotfile 'dotfiles/git/gitconfig' '.gitconfig'
+link_dotfile 'dotfiles/alacritty' '.config/alacritty'
+link_dotfile 'bin' 'bin'
 
 # link zshrc to .config/zsh
 cprint -p "Create the .zshrc redirect"
