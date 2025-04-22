@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # used for keeping track of current working directories
 # can store multiple and switch between them
 # can also store from vim and open in another terminal

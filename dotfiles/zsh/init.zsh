@@ -117,8 +117,8 @@ alias c='clear; clear'
 alias clear='clear; clear'
 alias t='tree'
 alias make_runnable='chmod a+x'
-alias l='ls -noGplh'
-alias lsh='ls -noGplha'
+alias l='ls -Gplh'
+alias lsh='ls -Gplha'
 alias q1='exit'
 alias p='python3'
 alias unlock='sudo xattr -r -d com.apple.quarantine' # Used for unlocking downloaded files from apple's quarantine process
@@ -224,7 +224,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 cwd() {
   # ans=$(p ~/bin/dotfiles/python/CWD.py $@)
   # eval "$ans"
-  eval $(p ~/bin/dotfiles/python/CWD.py $@)
+  eval $(~/bin/CWD $@)
 }
 # # alias cwdd="p ~/bin/dotfiles/python/CWD.py"
 
@@ -232,7 +232,7 @@ if [[ "$os" == "mac" ]]; then
   #used with mitch.py
   alias mitch="p ~/bin/dotfiles/python/mitch.py"
   #used with lof.py
-  alias lof="p ~/bin/dotfiles/python/lof.py"
+  # alias lof="p ~/bin/lof.py"
 fi
 
 # Custom Functions
