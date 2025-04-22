@@ -1,8 +1,23 @@
-source "$HOME/SysSync/bin/lib"
-
+export DOTFILES_PATH="$HOME/SysSync" # custom dotfiles path
+source "$DOTFILES_PATH/bin/lib"
 ################################################################################
 # PRE CHECK
 ################################################################################
+# Make sure we have the most up-to-date SysSync repo
+####################################################
+# Check if the repo has uncommitted changes
+if ! git -C "$DOTFILES_PATH" diff --quiet || ! git -C "$DOTFILES_PATH" diff --cached --quiet; then
+  echo "⚠️  SysSync is dirty (uncommitted changes). Please commit or stash."
+else
+  # Force English output for consistent parsing
+  output=$(LANG=C git -C "$DOTFILES_PATH" pull 2>&1)
+  # Only print output if the repo was *not* already up-to-date
+  if ! echo "$output" | grep -q "Already up to date"; then
+    echo "$output"
+  fi
+fi
+####################################################
+
 # Make sure we have /bin/bash set (for nixos)
 if [ ! -e "/bin/bash" ]; then
   echo "--> no /bin/bash detected! Adding symlink.."
@@ -19,7 +34,6 @@ os=$(detect_os)
 export VISUAL="nvim" # default visual 
 export EDITOR="$VISUAL" # default editor
 
-export DOTFILES_PATH="$HOME/SysSync"   # custom dotfiles path
 export PATH="$DOTFILES_PATH/bin:$PATH" # add dotfiles bin to path
 
 export ZSH_PLUGIN_PATH="$HOME/.local/share/zsh/plugins"
