@@ -39,6 +39,12 @@
   programs.zsh.enable = true;
   programs.firefox.enable = true;
 
+  ## CODEIUM (needed to get codeium.vim to work) ##
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    codeium
+  ];
+
   ## GUI ##
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
