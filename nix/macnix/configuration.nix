@@ -50,10 +50,6 @@
     nh # nix command helper
   ];
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "RobotoMono" "FiraCode" "DroidSansMono" "IBMPlexMono" ]; })
-  ];
-
   homebrew = {
     enable = true;
     casks = [
@@ -104,24 +100,16 @@
     '';
   };
 
-  # fonts.packages = with pkgs; [
-  #   # (nerdfonts.override { fonts = [ "RobotoMono" "FiraCode" "DroidSansMono" "IBMPlexMono" ]; })
-  #   nerd-fonts.roboto-mono
-  #   nerd-fonts.fira-code
-  #   nerd-fonts.droid-sans-mono
-  #   nerd-fonts.blex-mono
-  # ];
+  fonts.packages = with pkgs; [
+    # (nerdfonts.override { fonts = [ "RobotoMono" "FiraCode" "DroidSansMono" "IBMPlexMono" ]; })
+    pkgs.nerd-fonts.roboto-mono
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.droid-sans-mono
+    pkgs.nerd-fonts.blex-mono
+  ];
 
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
-
-  # Enable alternative shell support in nix-darwin.
-  # programs.zsh = {
-  #   enable = true;
-  #   enableCompletion = true;
-  #   autosuggestion.enable = true;
-  #   syntaxHighlighting.enable = true;
-  # };
 
   programs.zsh = {
     enable = true;
