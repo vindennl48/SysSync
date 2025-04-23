@@ -1,0 +1,9 @@
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+Description = Updating last upgrade timestamp...
+When = PostTransaction
+Exec = /bin/bash -c 'date +%s > /var/lib/last_update_reminder && chmod 644 /var/lib/last_update_reminder'
