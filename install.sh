@@ -24,6 +24,10 @@ if [[ "$os" == "arch" ]]; then
   cprint -p "Install Required Packages"
   sudo pacman -Syu neovim gcc make nodejs npm yarn xclip tmux zsh tree
 
+  cprint -p "Setting up pacman update reminder.."
+  sudo mkdir -p /etc/pacman.d/hooks
+  sudo ln -s ${dotfilesDir}/arch/update-reminder.hook /etc/pacman.d/hooks/update-reminder.hook
+
   cprint -p "Installing pyenv"
   curl -fsSL https://pyenv.run | bash -i
 

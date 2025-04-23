@@ -1,5 +1,7 @@
 export DOTFILES_PATH="$HOME/SysSync" # custom dotfiles path
 source "$DOTFILES_PATH/bin/lib"
+username="$(id -un)"
+os=$(detect_os)
 ################################################################################
 # PRE CHECK
 ################################################################################
@@ -18,14 +20,16 @@ else
 fi
 ####################################################
 
+# Make sure we check if pacman is updated
+if [[ "$os" == "arch" ]]; then
+  ${DOTFILES_PATH}/arch/update-reminder.sh
+fi
+
 # Make sure we have /bin/bash set (for nixos)
 if [ ! -e "/bin/bash" ]; then
   echo "--> no /bin/bash detected! Adding symlink.."
   sudo ln -s "$(which bash)" "/bin/bash"
 fi
-
-username="$(id -un)"
-os=$(detect_os)
 ################################################################################
 # ENVIRONMENT
 ################################################################################
