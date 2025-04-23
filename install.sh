@@ -101,6 +101,10 @@ link_dotfile 'dotfiles/tmux' '.config/tmux'
 link_dotfile 'dotfiles/git/gitconfig' '.gitconfig'
 link_dotfile 'dotfiles/alacritty' '.config/alacritty'
 link_dotfile 'bin' 'bin'
+if [[ "$os" == "nix" ]]; then
+  mkdir -p ${homeDir}/.config/looking-glass
+  link_dotfile 'dotfiles/looking-glass/looking-glass.ini' '.config/looking-glass/client.ini'
+fi
 
 # link zshrc to .config/zsh
 cprint -p "Create the .zshrc redirect"
