@@ -63,28 +63,85 @@ parted --script "${TARGET_DISK}" mkpart primary ext4 "${BOOT_PART_SIZE}" 100%
 # Inform the OS of partition table changes
 partprobe "${TARGET_DISK}" || udevadm settle || sleep 2 # Try different methods to ensure kernel sees changes
 
-# Brief pause to ensure devices appear
-sleep 3
+################################################################################
+echo "--> Informing OS of partition changes and waiting..."
+# Inform the OS of partition table changes
+sync # Ensure data is written to disk
+partprobe "${TARGET_DISK}" || echo "partprobe failed, continuing..."
+udevadm trigger # Explicitly trigger udev rules
+udevadm settle # Wait for udev processing to finish
+echo "    Pausing for 5 seconds to ensure device nodes are created..."
+sleep 5 # Increased delay from 3 to 5 seconds
 
 # Identify partition names (handles variations like 'p1' vs '1')
-ESP_PART=$(lsblk -pno NAME "${TARGET_DISK}" | sed -n '2p') # Usually the second partition listed
-ROOT_PART=$(lsblk -pno NAME "${TARGET_DISK}" | sed -n '3p') # Usually the third partition listed
+# Re-run lsblk just in case it updates late
+echo "--> Identifying partition device names..."
+lsblk "${TARGET_DISK}" # Show the detected partitions for debugging
+ESP_PART="${TARGET_DISK}1" # Usually the second partition listed
+ROOT_PART="${TARGET_DISK}2" # Usually the third partition listed
+
+# --- Verification and Debugging ---
+echo "    ESP Partition identified as: ${ESP_PART}"
+echo "    Root Partition identified as: ${ROOT_PART}"
 
 if [ -z "${ESP_PART}" ] || [ -z "${ROOT_PART}" ]; then
     echo "Error: Could not reliably determine partition device names for ${TARGET_DISK}."
-    echo "ESP Guess: ${ESP_PART}, Root Guess: ${ROOT_PART}"
     lsblk "${TARGET_DISK}"
     exit 1
 fi
 
-echo "    ESP Partition: ${ESP_PART}"
-echo "    Root Partition: ${ROOT_PART}"
+echo "--> Checking existence of device nodes before formatting..."
+if [ ! -b "${ESP_PART}" ]; then
+    echo "Error: Block device ${ESP_PART} not found! Waiting 5 more seconds..."
+    sleep 5
+    if [ ! -b "${ESP_PART}" ]; then
+       echo "Error: Block device ${ESP_PART} STILL not found! Aborting."
+       ls /dev/vda* || echo "/dev/vda devices not listed."
+       exit 1
+    fi
+fi
+echo "    ${ESP_PART} exists."
+
+if [ ! -b "${ROOT_PART}" ]; then
+    echo "Error: Block device ${ROOT_PART} not found! Aborting."
+    ls /dev/vda* || echo "/dev/vda devices not listed."
+    exit 1
+fi
+echo "    ${ROOT_PART} exists."
+# --- End Verification ---
 
 
 # --- Formatting ---
 echo "--> Formatting partitions..."
+echo "    Formatting ${ESP_PART} as FAT32..."
 mkfs.fat -F 32 -n BOOT "${ESP_PART}"
+
+echo "    Formatting ${ROOT_PART} as ext4..."
 mkfs.ext4 -L NIXOS_ROOT "${ROOT_PART}"
+################################################################################
+
+# # Brief pause to ensure devices appear
+# sleep 3
+#
+# # Identify partition names (handles variations like 'p1' vs '1')
+# ESP_PART=$(lsblk -pno NAME "${TARGET_DISK}" | sed -n '2p') # Usually the second partition listed
+# ROOT_PART=$(lsblk -pno NAME "${TARGET_DISK}" | sed -n '3p') # Usually the third partition listed
+#
+# if [ -z "${ESP_PART}" ] || [ -z "${ROOT_PART}" ]; then
+#     echo "Error: Could not reliably determine partition device names for ${TARGET_DISK}."
+#     echo "ESP Guess: ${ESP_PART}, Root Guess: ${ROOT_PART}"
+#     lsblk "${TARGET_DISK}"
+#     exit 1
+# fi
+#
+# echo "    ESP Partition: ${ESP_PART}"
+# echo "    Root Partition: ${ROOT_PART}"
+#
+#
+# # --- Formatting ---
+# echo "--> Formatting partitions..."
+# mkfs.fat -F 32 -n BOOT "${ESP_PART}"
+# mkfs.ext4 -L NIXOS_ROOT "${ROOT_PART}"
 
 # --- Mounting ---
 echo "--> Mounting partitions..."
@@ -108,21 +165,23 @@ nixos-install --no-root-passwd
 
 # --- Completion ---
 echo "--> Installation finished."
-echo "    Unmounting filesystems..."
-umount -R /mnt
-
 echo ""
 echo "-----------------------------------------------------------------"
 echo " NixOS installation complete!"
 echo " IMPORTANT POST-INSTALLATION STEPS:"
-echo " 1. Reboot your system: 'reboot'"
-echo " 2. Log in as 'root' (no password initially)."
-echo " 3. IMMEDIATELY set a root password: 'passwd'"
-echo " 4. Consider adding a regular user account:"
-echo "    a. Edit /etc/nixos/configuration.nix"
-echo "    b. Add user config (see NixOS manual for examples)"
-echo "    c. Run 'nixos-rebuild switch'"
-echo " 5. Customize your '/etc/nixos/configuration.nix' further."
+echo " 1. Chrooting into the new system"
+echo " 2. Make sure to run passwd command to set root and nixos password"
+echo " 3. Type Exit so we can unmount the system"
+echo " 4. Reboot!"
 echo "-----------------------------------------------------------------"
+
+nixos-enter --root /mnt
+
+echo "    Unmounting filesystems..."
+umount -R /mnt
+
+echo ""
+echo ""
+echo "--> Finished! Make sure to 'reboot'"
 
 exit 0
