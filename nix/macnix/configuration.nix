@@ -48,7 +48,6 @@
     ffmpeg
     google-chrome
     nh # nix command helper
-    util-linux
   ];
 
   homebrew = {
