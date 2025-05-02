@@ -69,7 +69,8 @@ def disableSleep(willDisable):
 
 def open_midi_translator():
     # start Midi Translator
-    os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiRoute/main.py" &')
+    #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiRoute/main.py" &')
+    os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiAllToOne/main.py" &')
 
 def start_programs(type_of_startup="practice"):
     disableSleep(True)
@@ -95,7 +96,8 @@ def start_programs(type_of_startup="practice"):
     # start Midi Translator and Lights
     #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiRoute/main.py" &')
     #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/DMX/main.py" &')
-    os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiAllToOne/main.py" &')
+    #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiAllToOne/main.py" &')
+    open_midi_translator()
     time.sleep(2)
 
     input("--> Make sure Audio Devices are set up correctly before continuing")
