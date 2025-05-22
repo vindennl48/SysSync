@@ -71,6 +71,12 @@ def open_midi_translator():
     # start Midi Translator
     #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiRoute/main.py" &')
     os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiAllToOne/main.py" &')
+    time.sleep(2)
+
+def open_dmx_controller():
+    # start DMX controller
+    os.system('nohup python3 "/Users/mitch/Documents/Code/Python/DMX/main.py" &')
+    time.sleep(2)
 
 def start_programs(type_of_startup="practice"):
     disableSleep(True)
@@ -95,10 +101,8 @@ def start_programs(type_of_startup="practice"):
 
     # start Midi Translator and Lights
     #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiRoute/main.py" &')
-    #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/DMX/main.py" &')
-    #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiAllToOne/main.py" &')
+    #  open_dmx_controller()
     open_midi_translator()
-    time.sleep(2)
 
     input("--> Make sure Audio Devices are set up correctly before continuing")
     input("    Make sure Focusrite is primary device!")
@@ -136,6 +140,7 @@ if __name__ == "__main__":
     parser.add_argument("--practice",              action="store_true", help="Start all programs for practice")
     parser.add_argument("--record",                action="store_true", help="Start all programs for recording")
     parser.add_argument("-m", "--midi-translator", action="store_true", help="Start all programs for practice")
+    parser.add_argument("-d", "--dmx-controller",  action="store_true", help="Start all programs for practice")
     parser.add_argument("--reset",                 action="store_true", help="Reset sleep and audio device")
     parser.add_argument("--upload",                action="store_true", help="Start all programs for LOF")
     parser.add_argument("--clean",                 action="store_true", help="Clean up log folder")
@@ -158,6 +163,8 @@ if __name__ == "__main__":
         start_programs("record")
     if args.midi_translator:
         open_midi_translator()
+    if args.dmx_controller:
+        open_dmx_controller()
     if args.upload:
         create_log_folder_and_upload()
         clean_log_folder()
