@@ -30,7 +30,9 @@ Plug('catppuccin/nvim', { ['as'] = 'catppuccin' }) -- cool color scheme
 Plug 'christoomey/vim-tmux-navigator' -- switch between tmux and vim
 Plug 'tmux-plugins/vim-tmux' -- additional tools to deal with tmux
 Plug 'tpope/vim-repeat' -- repeat plugin commands
-Plug('junegunn/fzf.vim', { ['commit'] = '279e1ec068f526e985ee7e3f62a71f083bbe0196' }) -- fuzzy finder
+-- Plug('junegunn/fzf.vim', { ['commit'] = '279e1ec068f526e985ee7e3f62a71f083bbe0196' }) -- fuzzy finder
+Plug 'junegunn/fzf.vim' -- fuzzy finder
+Plug 'junegunn/fzf' -- fuzzy finder
 Plug 'scrooloose/nerdtree' -- filetree
 Plug 'scrooloose/nerdcommenter' -- easy commenting
 Plug 'phaazon/hop.nvim' -- quick jump to another char
