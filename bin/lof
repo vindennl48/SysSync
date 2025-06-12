@@ -101,7 +101,7 @@ def start_programs(type_of_startup="practice"):
 
     # start Midi Translator and Lights
     #  os.system('nohup python3 "/Users/mitch/Documents/Code/Python/MidiRoute/main.py" &')
-    #  open_dmx_controller()
+    open_dmx_controller()
     open_midi_translator()
 
     input("--> Make sure Audio Devices are set up correctly before continuing")
