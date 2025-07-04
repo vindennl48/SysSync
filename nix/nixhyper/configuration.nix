@@ -129,18 +129,20 @@
         matchConfig.Name = "br0";
         networkConfig.DHCP = "ipv4";
       };
-      "20-wlan" = {
-        matchConfig.Name = "wl*";
-        linkConfig.RequiredForOnline = "routable";
-        networkConfig.DHCP = "yes";
-        networkConfig.MulticastDNS = "yes";
-      };
+      # "20-wlan" = {
+      #   matchConfig.Name = "wl*";
+      #   linkConfig.RequiredForOnline = "routable";
+      #   networkConfig.DHCP = "yes";
+      #   networkConfig.MulticastDNS = "yes";
+      # };
     };
   };
 
   networking.networkmanager.enable = true;
   networking.networkmanager.unmanaged = [ "br0" ];
   networking.firewall.allowedTCPPorts = [ 22 8000 5901 ];
+  networking.nameservers = [ "192.168.1.1" ];
+  networking.search = [ "local" ];
 
   ## OpenSSH ##
   services.openssh.enable = true;
