@@ -48,6 +48,7 @@
     ffmpeg
     google-chrome
     nh # nix command helper
+    magic-wormhole
   ];
 
   homebrew = {
