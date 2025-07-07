@@ -9,3 +9,5 @@
 [user]
   email = mitchellwoodbine@gmail.com
   name = Mitchell Woodbine
+[init]
+	defaultBranch = master
