@@ -20,7 +20,7 @@
   environment.systemPackages = with pkgs; [
     # system
     spice spice-gtk spice-protocol spice-vdagent
-    virt-manager virt-viewer win-virtio win-spice pciutils virtiofsd
+    virt-manager virt-viewer win-virtio win-spice pciutils virtiofsd guestfs-tools
     looking-glass-client # version B7-rc1
 
     # general
