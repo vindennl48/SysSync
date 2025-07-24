@@ -64,7 +64,7 @@
       "vlc"
       "visual-studio-code"
       "displaylink"
-      "balenaetcher"
+      "bluebubbles"
     ];
     brews = [
       "pyenv" # having problems with the nix version and tk
