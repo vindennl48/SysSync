@@ -81,10 +81,10 @@ def open_dmx_controller():
 def start_programs(type_of_startup="practice"):
     disableSleep(True)
 
-    new_device = "LOF Practice"
+    new_device = "LOF"
     #  # Update reaper.ini with the correct audio device
     #  if type_of_startup in [ "practice", "record" ]:
-    #      new_device = "LOF Practice"
+    #      new_device = "LOF"
     #  else:
     #  #  elif type_of_startup = "live":
     #      new_device = "LOF Live"
