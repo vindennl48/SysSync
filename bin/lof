@@ -94,6 +94,7 @@ def start_programs(type_of_startup="practice"):
     reaper_ini["REAPER"]["coreaudiooutdevnew"] = new_device
     reaper_ini["REAPER"]["useinnc"]            = 3
     reaper_ini["REAPER"]["coreaudiosrate"]     = 48000
+    reaper_ini["REAPER"]["coreaudiobs"]        = 128
     dict_to_ini(REAPER_INI_PATH, reaper_ini)
 
     # Switch MAC output to different output
