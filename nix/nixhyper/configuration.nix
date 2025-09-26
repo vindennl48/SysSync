@@ -64,6 +64,9 @@
   services.xrdp.openFirewall = true;
   services.xrdp.defaultWindowManager = "startplasma-x11";
 
+  # Enable Thunderbolt
+  services.hardware.bolt.enable = true;
+
   ## FONTS ##
   fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "RobotoMono" "FiraCode" "DroidSansMono" "IBMPlexMono" ]; })

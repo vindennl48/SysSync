@@ -155,17 +155,17 @@ alias youtubeList='yt-dlp -x --audio-format wav -a' # last arg is file of links
 
 # Nix Specific
 alias gui="startplasma-wayland" # to start GUI from terminal
-alias nix_boot='nh os boot ~/MyNix/flake.nix'
+alias nix_boot='nh os boot ~/SysSync/nix/nixhyper/flake.nix'
 # alias nix_switch='nh os switch ~/MyNix/flake.nix'
 alias nix_home='home-manager switch --flake ~/.config/home-manager'
-alias nix_edit_os='cd ~/MyNix; vim'
+alias nix_edit_os='cd ~/SysSync/nix/nixhyper; vim'
 alias nix_edit_home='cd ~/.config/home-manager; vim'
 
 nix_switch() {
   if [[ "$os" == "mac" ]]; then
     darwin-rebuild switch --flake ~/MyNix
   else
-    nh os switch ~/MyNix
+    nh os switch ~/SysSync/nix/nixhyper
   fi
 }
 
