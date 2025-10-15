@@ -106,7 +106,9 @@ def start_programs(type_of_startup="practice"):
     open_midi_translator()
 
     input("--> Make sure Audio Devices are set up correctly before continuing")
-    input("    Make sure Focusrite is primary device!")
+    input("    1. Make sure Focusrite is primary device!")
+    input("    2. Make sure BlackHole is secondary device!")
+    input("    3. Make sure AxeFX is third device!")
     print("--> Opening Audio/MIDI settings.. ")
     os.system('open "/System/Applications/Utilities/Audio MIDI Setup.app"')
     input("--> Press Enter to open Reaper..")
